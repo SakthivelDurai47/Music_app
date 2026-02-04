@@ -1,6 +1,6 @@
 import { songs } from "./data.js";
 
-let song_count = 1;
+let song_count = 0;
 let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
 const nextBtn = document.getElementById("next");
 const backBtn = document.getElementById("back");
@@ -15,9 +15,27 @@ const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 const list = document.getElementById("allSongs");
 const likedList = document.getElementById("likedSongs");
-audio.src = songs[song_count].url;
-title.innerText = songs[song_count].title;
-img.src = songs[song_count].cover;
+const likedTab = document.getElementById("likeSongBtn");
+const allTab = document.getElementById("allSongBtn");
+try {
+  audio.src = songs[likedSongs[song_count]].url;
+  title.innerText = songs[likedSongs[song_count]].title;
+  img.src = songs[likedSongs[song_count]].cover;
+} catch (e) {}
+
+console.log();
+likedTab.addEventListener("click", () => {
+  likedList.style.display = "block";
+  list.style.display = "none";
+  likedTab.classList.add("active");
+  allTab.classList.remove("active");
+});
+allTab.addEventListener("click", () => {
+  likedList.style.display = "none";
+  list.style.display = "block";
+  likedTab.classList.remove("active");
+  allTab.classList.add("active");
+});
 
 audio.addEventListener("loadedmetadata", () => {
   progress.max = audio.duration;
@@ -37,6 +55,7 @@ progress.addEventListener("input", () => {
 
 pause.addEventListener("click", () => {
   if (audio.paused) {
+    updatePlayUI(likedSongs[song_count]);
     audio.play();
   } else {
     audio.pause();
@@ -57,9 +76,10 @@ bf.addEventListener("click", () => {
 nextBtn.addEventListener("click", nextSong);
 
 function nextSong() {
-  audio.src = songs[song_count + 1].url;
-  title.innerText = songs[song_count + 1].title;
-  img.src = songs[song_count + 1].cover;
+  audio.src = songs[likedSongs[song_count + 1]].url;
+  title.innerText = songs[likedSongs[song_count + 1]].title;
+  img.src = songs[likedSongs[song_count + 1]].cover;
+  updatePlayUI(likedSongs[song_count + 1]);
   song_count++;
   audio.play();
 }
@@ -67,9 +87,10 @@ function nextSong() {
 backBtn.addEventListener("click", previousSong);
 
 function previousSong() {
-  audio.src = songs[song_count - 1].url;
-  title.innerText = songs[song_count - 1].title;
-  img.src = songs[song_count - 1].cover;
+  audio.src = songs[likedSongs[song_count - 1]].url;
+  title.innerText = songs[likedSongs[song_count - 1]].title;
+  img.src = songs[likedSongs[song_count - 1]].cover;
+  updatePlayUI(likedSongs[song_count - 1]);
   song_count--;
   audio.play();
 }
@@ -78,10 +99,12 @@ audio.addEventListener("ended", nextSong);
 
 function updateLikeList() {
   likedList.innerHTML = "";
+
   likedSongs.forEach((id) => {
     const div = document.createElement("div");
+    div.classList.add(`song${id}`);
     div.innerHTML = `
-    <img src="${songs[id].cover}" width="60"/>
+    <img src='${songs[id].cover}' width="60"/>
     <p>${songs[id].title}</p>
     <button onclick="likeSong('${id}')">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ff003c">
@@ -97,18 +120,22 @@ function updateLikeList() {
   if (likedList.innerHTML == "") {
     likedList.innerHTML =
       "<h3>Nothing to see here, start liking music to add it here</h3>";
-  } else {
-    console.log("hkk");
   }
+  updatePlayUI(likedSongs[song_count]);
 }
 updateLikeList();
 
-Object.entries(songs).forEach(([id, song]) => {
-  const div = document.createElement("div");
-  div.classList.add("songList");
-  div.classList.add(`song${id}`);
-  div.innerHTML = `
-    <img src="${song.cover}" width="60"/>
+function updateAllList() {
+  list.innerHTML = "";
+  Object.entries(songs).forEach(([id, song]) => {
+    if (likedSongs.includes(id)) {
+      null;
+    } else {
+      const div = document.createElement("div");
+      div.classList.add("songList");
+      div.classList.add(`song${id}`);
+      div.innerHTML = `
+    <img src='${song.cover}' onerror="this.src='covers/images.jpg';" width="60"/>
     <p>${song.title}</p>
     
     <button onclick="likeSong('${id}')">
@@ -124,17 +151,21 @@ Object.entries(songs).forEach(([id, song]) => {
     </button>
   `;
 
-  list.appendChild(div);
-});
+      list.appendChild(div);
+    }
+  });
+}
+
+updateAllList();
 
 function playSong(id) {
-  const playingSong = document.querySelector(".playing");
-  playingSong.classList.remove("playing");
+  updatePlayUI(id);
   audio.src = songs[id].url;
   title.innerText = songs[id].title;
   img.src = songs[id].cover;
   audio.play();
-  document.querySelector(`.song${id}`).classList.add("playing");
+
+  audio.addEventListener("ended", nextSong);
 }
 
 function likeSong(id) {
@@ -155,6 +186,7 @@ function likeSong(id) {
   // 2. Save the updated array back to localStorage
   localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
   updateLikeList();
+  updateAllList();
   // Optional: Refresh the UI to show the filled/empty heart
 }
 
@@ -178,6 +210,14 @@ function updateHeartUI(id, option) {
   } else {
     likedUi.classList.remove("liked");
   }
+}
 
-  console.log(likedUi);
+function updatePlayUI(id) {
+  const playingSong = document.querySelectorAll(".playing");
+  playingSong.forEach((ele) => {
+    ele.classList.remove("playing");
+  });
+  document.querySelectorAll(`.song${id}`).forEach((ele) => {
+    ele.classList.add("playing");
+  });
 }

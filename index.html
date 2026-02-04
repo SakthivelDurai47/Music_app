@@ -9,8 +9,8 @@
   <body>
     <main>
       <h1>Sakthi's Music Player!</h1>
-      <img src="" id="img" alt="Error while loading img" />
-      <p>Now Playing: <span id="title"></span></p>
+      <img src="covers/images.jpg" id="img" alt="Error while loading img" />
+      <p>Now Playing: <span id="title">---</span></p>
       <br />
 
       <div class="timeline">
@@ -21,7 +21,9 @@
 
       <audio id="player" src=""></audio>
     </main>
+
     <br />
+
     <div id="controls">
       <button id="bf">
         <svg
@@ -89,6 +91,7 @@
         </svg>
       </button>
     </div>
+
     <section id="playlist">
       <h2>Playlist</h2>
       <br />
@@ -96,13 +99,16 @@
         <h3 id="likeSongBtn" class="active">Liked Songs</h3>
         <h3 id="allSongBtn">All Songs</h3>
       </div>
+
       <br /><br />
 
       <div id="likedSongs"></div>
 
       <div id="allSongs"></div>
     </section>
+
     <div class="playing"></div>
+
     <script type="module" src="app.js"></script>
     <script type="module" src="data.js"></script>
   </body>

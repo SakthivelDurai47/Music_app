@@ -87,7 +87,7 @@ main {
 #controls {
   display: flex;
   background-color: #020024;
-  border-top: 1px solid whitesmoke;
+  border-top: 1px solid #020024;
   justify-content: center;
   align-items: center;
   gap: 3px;
@@ -95,6 +95,12 @@ main {
   padding: 12px;
   position: fixed;
   bottom: 0;
+  #pause {
+    background-color: whitesmoke;
+    svg {
+      fill: #020024;
+    }
+  }
 }
 
 button {
@@ -182,7 +188,8 @@ button:hover {
   }
 }
 #allSongs {
-  /* display: none; */
+  display: none;
+  margin: auto;
 }
 
 .active {
