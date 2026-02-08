@@ -17,6 +17,8 @@ const list = document.getElementById("allSongs");
 const likedList = document.getElementById("likedSongs");
 const likedTab = document.getElementById("likeSongBtn");
 const allTab = document.getElementById("allSongBtn");
+const theme = document.getElementById("theme");
+
 try {
   audio.src = songs[likedSongs[song_count]].url;
   title.innerText = songs[likedSongs[song_count]].title;
@@ -220,4 +222,33 @@ function updatePlayUI(id) {
   document.querySelectorAll(`.song${id}`).forEach((ele) => {
     ele.classList.add("playing");
   });
+}
+
+let currentTheme = localStorage.getItem("theme") || "dark";
+
+themeSwither();
+
+theme.addEventListener("click", () => {
+  currentTheme = currentTheme == "dark" ? "light" : "dark";
+  themeSwither();
+});
+
+function themeSwither() {
+  const root = document.documentElement;
+  if (currentTheme == "light") {
+    root.style.setProperty("--background-color", "#f6f6f6");
+    // Change the text color
+    root.style.setProperty("--text-color", "#131313");
+    // You can even use RGBA or any other valid CSS color unit
+    root.style.setProperty("--secondary-dim", "#131313c4");
+  } else {
+    root.style.setProperty("--background-color", "#131313");
+
+    // Change the text color
+    root.style.setProperty("--text-color", "#f6f6f6");
+
+    // You can even use RGBA or any other valid CSS color unit
+    root.style.setProperty("--secondary-dim", "#f6f6f6c4");
+  }
+  localStorage.setItem("theme", currentTheme);
 }
