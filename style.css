@@ -1,0 +1,237 @@
+:root {
+  --background-color: #131313;
+  /* 131313 */
+  --text-color: #f6f6f6;
+  /* f6f6f6 */
+  --secondary-dim: #f6f6f6c4;
+  /* 131313c4 */
+  /* f6f6f6c4 */
+  --like-color: lightcoral;
+
+  --play-color: limegreen;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in 0.5s;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  width: 100%;
+  color: var(--text-color);
+}
+
+svg {
+  cursor: pointer;
+  fill: var(--text-color);
+}
+
+/* Target both html and body to be safe */
+html {
+  /* For Firefox */
+  scrollbar-width: none;
+}
+/* For Chrome, Safari, and Edge */
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  span {
+    font-size: 14px;
+    color: var(--text-color);
+    width: 40px;
+    text-align: center;
+  }
+}
+
+#timeline {
+  flex: 1;
+  appearance: none;
+  height: 4px;
+  width: 200px;
+  background: #833ab4;
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#timeline::-webkit-slider-thumb {
+  appearance: none;
+  width: 6px;
+  height: 10px;
+  background: var(--text-color);
+  border-radius: 30%;
+}
+
+#timeline::-moz-range-thumb {
+  width: 6px;
+  height: 10px;
+  background: var();
+  border-radius: 30%;
+}
+
+#img {
+  width: 250px;
+  border-radius: 12px;
+  margin: 20px;
+}
+
+#controls {
+  display: flex;
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 12px;
+  bottom: 0;
+  button {
+    border: none;
+    width: 70px;
+    height: 40px;
+    font-weight: bold;
+    border-radius: 300px;
+    background: none;
+    cursor: pointer;
+    transition: ease 0.3s;
+    svg {
+      scale: 1.3;
+      fill: var(--text-color);
+    }
+  }
+}
+
+button:hover {
+  scale: 1.3;
+}
+
+.playing {
+  button:last-of-type {
+    cursor: pointer;
+    svg {
+      fill: var(--play-color);
+      /* display: block; */
+    }
+  }
+}
+
+#playlist {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 80px;
+  border-radius: 24px;
+  padding: 0px 8px 8px 8px;
+  overflow: hidden;
+  .songList {
+    border: 1px solid var(--secondary-dim);
+    border-radius: 18px;
+    margin-top: 12px;
+    display: grid;
+    align-items: center;
+    width: 350px;
+    grid-template-columns: 1fr 4fr 1fr 1fr;
+    font-weight: bold;
+    gap: 10px;
+    color: var(--text-color);
+    padding: 8px;
+    img {
+      border-radius: 8px;
+    }
+    button {
+      width: 30px;
+      height: 30px;
+      background: none;
+      display: flex;
+      justify-content: flex-end;
+      border: none;
+      align-items: center;
+    }
+  }
+  h4 {
+    padding: 30px 10px;
+    width: 350px;
+    margin: auto;
+    text-align: center;
+  }
+}
+
+.liked {
+  button:first-of-type {
+    cursor: pointer;
+    svg {
+      fill: var(--like-color);
+    }
+  }
+}
+
+#selection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: auto;
+  padding: 10px;
+  border-radius: 100px;
+  h3 {
+    width: 100%;
+    padding: 4px 12px;
+    border-radius: 100px;
+    cursor: pointer;
+  }
+}
+
+#allSongs {
+  display: none;
+  margin: auto;
+}
+
+.active {
+  background-color: var(--text-color);
+  color: var(--background-color);
+  transition: ease 0.5s;
+}
+
+#heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+#theme {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 100px;
+  background: none;
+}
