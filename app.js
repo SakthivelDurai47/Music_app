@@ -247,7 +247,12 @@ function updatePlayUI(id) {
     ele.classList.remove("playing");
   });
   const songPlaying = document.querySelector(`.song${id}`);
-  songPlaying.classList.add("playing");
+  try {
+    songPlaying.classList.add("playing");
+  } catch (e) {
+    // console.log(e);
+    null;
+  }
 }
 
 let currentTheme = localStorage.getItem("theme") || "dark";
@@ -280,23 +285,27 @@ function themeSwither() {
 // Check if the browser supports the Media Session API
 if ("mediaSession" in navigator) {
   // 1. Set the Metadata
-  updateNavigator();
+  try {
+    updateNavigator();
 
-  navigator.mediaSession.setActionHandler("play", () => {
-    audio.play();
-  });
+    navigator.mediaSession.setActionHandler("play", () => {
+      audio.play();
+    });
 
-  navigator.mediaSession.setActionHandler("pause", () => {
-    audio.pause();
-  });
+    navigator.mediaSession.setActionHandler("pause", () => {
+      audio.pause();
+    });
 
-  navigator.mediaSession.setActionHandler("previoustrack", () => {
-    previousSong();
-  });
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      previousSong();
+    });
 
-  navigator.mediaSession.setActionHandler("nexttrack", () => {
-    nextSong();
-  });
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      nextSong();
+    });
+  } catch (e) {
+    null;
+  }
 }
 
 function updateNavigator() {
